@@ -3,11 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../App";
 import "./Cart.css";
+
 export default function Cart() {
     const { user, setUser, cart, setCart } = useContext(AppContext);
     const API_URL = import.meta.env.VITE_API_URL;
     const [orderValue, setOrderValue] = useState(0);
     const Navigate = useNavigate();
+
     const increment = (id) => {
         setCart(
             cart.map((item) => {
@@ -55,59 +57,80 @@ export default function Cart() {
         setCart({});
         Navigate("/orders");
     };
+
     return (
-        <div>
-            <h3 style={{ padding: "10px" }}>My Cart</h3>
+        <div className="cart-page">
+            <h2 className="cart-title">🛒 My Cart</h2>
+
             {cart.length > 0 ? (
-                <div>
-                    <table>
-                        <tr>
-                            <th>Product Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                        </tr>
-                        {cart &&
-                            cart.map(
-                                (item) =>
-                                    item.quantity > 0 && (
-                                        <tr key={item._id}>
-                                            <td>{item.name}</td>
-                                            <td className="rAlign">{item.price}</td>
-                                            <td className="cAlign">
-                                                <button onClick={() => decrement(item._id)}>-</button>
-                                                {item.quantity}
-                                                <button onClick={() => increment(item._id)}>+</button>
-                                            </td>
-                                            <td className="rAlign">{item.price * item.quantity}</td>
-                                        </tr>
-                                    ),
-                            )}
-                        <tr className="tableFooter">
-                            <td colspan="3">Order Value:</td>
-                            <td className="rAlign">{orderValue}</td>
-                        </tr>
+                <div className="cart-container">
+
+                    <table className="cart-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {cart &&
+                                cart.map(
+                                    (item) =>
+                                        item.quantity > 0 && (
+                                            <tr key={item._id}>
+                                                <td className="product-name">{item.name}</td>
+
+                                                <td className="rAlign">₹{item.price}</td>
+
+                                                <td className="cAlign">
+                                                    <div className="qty-box">
+                                                        <button onClick={() => decrement(item._id)}>-</button>
+                                                        <span>{item.quantity}</span>
+                                                        <button onClick={() => increment(item._id)}>+</button>
+                                                    </div>
+                                                </td>
+
+                                                <td className="rAlign total">
+                                                    ₹{item.price * item.quantity}
+                                                </td>
+                                            </tr>
+                                        ),
+                                )}
+                        </tbody>
+
+                        <tfoot>
+                            <tr className="tableFooter">
+                                <td colSpan="3">Order Value</td>
+                                <td className="rAlign grand-total">₹{orderValue}</td>
+                            </tr>
+                        </tfoot>
                     </table>
 
-                    {user?.email ? (
-                        <p>
-                            <button onClick={placeOrder} className="App-Cart-Button">
+                    <div className="cart-action">
+                        {user?.email ? (
+                            <button onClick={placeOrder} className="cart-btn">
                                 Place Order
                             </button>
-                        </p>
-                    ) : (
-                        <p>
+                        ) : (
                             <button
-                                className="App-Cart-Button"
+                                className="cart-btn"
                                 onClick={() => Navigate("/login")}
                             >
                                 Login to Order
                             </button>
-                        </p>
-                    )}
+                        )}
+                    </div>
                 </div>
             ) : (
-                <p>Your cart is empty</p>
+                <div className="empty-cart">
+                    <h3>Your cart is empty 😔</h3>
+                    <button onClick={() => Navigate("/")}>
+                        Go Shopping
+                    </button>
+                </div>
             )}
         </div>
     );

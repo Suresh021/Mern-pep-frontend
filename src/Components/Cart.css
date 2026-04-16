@@ -1,30 +1,108 @@
-table {
-    margin: 10px;
-    border: 1px solid gray
+.cart-page {
+    padding: 30px;
+    background: #f9fafb;
 }
 
-table th {
-    background-color: #eeeeee;
-    padding: 5px;
-    margin: 10px;
+.cart-title {
+    font-size: 26px;
+    margin-bottom: 20px;
 }
 
-table td {
-    border: 1px solid gray
+.cart-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.tableFooter {
-    background-color: #eeeeee;
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-table .rAlign {
+.cart-table th {
+    text-align: left;
+    padding: 12px;
+    background: #f3f4f6;
+}
+
+.cart-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.rAlign {
     text-align: right;
 }
 
-table .cAlign {
+.cAlign {
     text-align: center;
 }
 
-.App-Cart-Button {
-    margin: 10px;
+.qty-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.qty-box button {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #3B82F6;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.qty-box span {
+    font-weight: 500;
+}
+
+.total {
+    font-weight: bold;
+    color: #3B82F6;
+}
+
+.tableFooter td {
+    font-weight: bold;
+}
+
+.grand-total {
+    font-size: 18px;
+    color: #111;
+}
+
+.cart-action {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.cart-btn {
+    padding: 10px 20px;
+    background: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.cart-btn:hover {
+    background: #2563eb;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 50px;
+}
+
+.empty-cart button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 6px;
 }

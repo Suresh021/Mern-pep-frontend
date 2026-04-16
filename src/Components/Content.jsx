@@ -5,6 +5,7 @@ import "./Content.css";
 
 function Content() {
     const [products, setProducts] = useState([]);
+    const [category, setCategory] = useState("All");
     const { cart, setCart } = useContext(AppContext);
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,6 +19,7 @@ function Content() {
         const res = await axios.get(url);
         setProducts(res.data);
     };
+
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -55,29 +57,64 @@ function Content() {
                 .filter((item) => item.quantity > 0),
         );
     };
-    return (
-        <div className="row">
-            {products &&
-                products.map((product) => (
-                    <div className="box" key={product._id}>
-                        <img src={`${API_URL}${product.imageurl}`} width={300} alt="" />
-                        <h3>{product.name}</h3>
-                        <p>{product.description}</p>
-                        <h4>{product.price}</h4>
 
-                        {cart.find(
-                            (item) => item._id === product._id && item.quantity > 0,
-                        ) ? (
-                            <>
-                                <button onClick={() => decrement(product._id)}>-</button>
-                                <ItemQuantity id={product._id} />
-                                <button onClick={() => increment(product._id)}>+</button>
-                            </>
-                        ) : (
-                            <button onClick={() => addToCart(product)}>Add to Cart</button>
-                        )}
-                    </div>
+    const filteredProducts =
+        category === "All"
+            ? products
+            : products.filter((p) => p.category === category);
+
+    return (
+        <div className="content-page">
+
+            <div className="categories">
+                {["All", "Dresses", "Accessories", "Shoes", "Watches"].map((cat) => (
+                    <button
+                        key={cat}
+                        className={category === cat ? "active" : ""}
+                        onClick={() => setCategory(cat)}
+                    >
+                        {cat}
+                    </button>
                 ))}
+            </div>
+
+            <div className="product-grid">
+                {filteredProducts &&
+                    filteredProducts.map((product) => (
+                        <div className="product-card" key={product._id}>
+                            <img
+                                src={`${API_URL}${product.imageurl}`}
+                                alt={product.name}
+                            />
+
+                            <h3>{product.name}</h3>
+                            <p className="desc">{product.description}</p>
+                            <h4>₹{product.price}</h4>
+
+                            {cart.find(
+                                (item) =>
+                                    item._id === product._id && item.quantity > 0,
+                            ) ? (
+                                <div className="qty-control">
+                                    <button onClick={() => decrement(product._id)}>
+                                        -
+                                    </button>
+                                    <ItemQuantity id={product._id} />
+                                    <button onClick={() => increment(product._id)}>
+                                        +
+                                    </button>
+                                </div>
+                            ) : (
+                                <button
+                                    className="add-btn"
+                                    onClick={() => addToCart(product)}
+                                >
+                                    Add to Cart
+                                </button>
+                            )}
+                        </div>
+                    ))}
+            </div>
         </div>
     );
 }
